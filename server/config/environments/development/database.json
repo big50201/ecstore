@@ -1,0 +1,21 @@
+{
+  "defaultConnection": "default",
+  "connections": {
+    "default": {
+      "connector": "strapi-hook-mongoose",
+      "settings": {
+        "client": "mongo",
+        "host": "ds113765.mlab.com",
+        "srv": false,
+        "port": "13765",
+        "database": "ecstore",
+        "username": "jennifersung",
+        "password": "happy0201"
+      },
+      "options": {
+        "authenticationDatabase": "ecstore",
+        "ssl": false
+      }
+    }
+  }
+}
