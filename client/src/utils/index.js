@@ -1,4 +1,5 @@
 const CART_KEY = 'cart';
+const TOKEN_KEY = 'jwt';
 
 export const caculatePrice = items=>{
     return `${items.reduce((acc,item)=>acc+item.quantity * item.price,0).toFixed(2)}`;
@@ -16,4 +17,30 @@ export const getCart =(cartKey=CART_KEY)=>{
     }
 
     return [];
+}
+
+export const clearCart = (cartKey = CART_KEY)=>{
+    if(localStorage){
+        return localStorage.removeItem(cartKey);
+    }
+}
+
+export const setTokenKey = (value,tokenKey = TOKEN_KEY)=>{
+    if(localStorage){
+        return localStorage.setItem(tokenKey,JSON.stringify(value));
+    }
+}
+
+export const getTokenKey = (tokenKey=TOKEN_KEY)=>{
+    if(localStorage && localStorage.getItem(tokenKey)){
+        return JSON.parse(localStorage.getItem(tokenKey));
+    }
+
+    return null;
+}
+
+export const clearToken = (tokenKey=TOKEN_KEY)=>{
+    if(localStorage){
+        return localStorage.removeItem(tokenKey);
+    }
 }
