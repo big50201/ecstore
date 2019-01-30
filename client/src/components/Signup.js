@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Container,Box,Button,Heading,Text,TextField} from 'gestalt';
 import ToastMessage from './ToastMessage';
-import {setToken} from '../utils';
+import {setTokenKey} from '../utils';
 import strapi from 'strapi-sdk-javascript/build/main';
 
 const apiUrl = process.env.API_URL || "http://localhost:1337";
@@ -32,7 +32,7 @@ class Signup extends Component{
             this.setState({loading:true});
             const response = await strApi.register(username,email,password);
             this.setState({loading:false});
-            console.log(response);
+            setTokenKey(response.jwt);
             this.redirectUser("/");
 
 
