@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Box,Heading,Image,Text,Card,Button,Mask,IconButton} from 'gestalt';
 import {Link} from 'react-router-dom';
-import {caculatePrice} from '../utils';
+import {caculatePrice,setCart, getCart} from '../utils';
 import strapi from 'strapi-sdk-javascript/build/main';
 
 const apiUrl = process.env.API_URL || "http://localhost:1337";
@@ -22,17 +22,17 @@ class Brews extends Component {
                 quantity:1
             });
 
-            this.setState({cartItems:updatedItems});
+            this.setState({cartItems:updatedItems},()=>setCart(updatedItems));
         }else{
             const updatedItems = [...this.state.cartItems];
             updatedItems[alreadyInCart].quantity +=1;
-            this.setState({cartItems:updatedItems});
+            this.setState({cartItems:updatedItems},()=>setCart(updatedItems));
         }
     }
 
     deleteItemFromCart = itemToDelete=>{
         const filterItems = this.state.cartItems.filter(item=>item._id !== itemToDelete);
-        this.setState({cartItems:filterItems});
+        this.setState({cartItems:filterItems},()=>setCart(filterItems));
     }
 
     async componentDidMount(){
@@ -57,7 +57,11 @@ class Brews extends Component {
                       }`
                 }
             });
-            this.setState({brews:response.data.brand.brews,brand:response.data.brand.name})
+            this.setState({
+                brews:response.data.brand.brews,
+                brand:response.data.brand.name,
+                cartItems:getCart()
+            })
         }catch(e){
             console.error("Strapi Brews",e);
         }
