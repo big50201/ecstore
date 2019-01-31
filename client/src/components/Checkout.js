@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Container,Box,Button,Heading,Text,TextField} from 'gestalt';
+import {Container,Box,Button,Heading,Text,TextField,Modal,Spinner} from 'gestalt';
 import ToastMessage from './ToastMessage';
 import {getCart,caculatePrice} from '../utils';
 class Checkout extends Component{
@@ -11,6 +11,8 @@ class Checkout extends Component{
         postcode:'',
         city:'',
         confirmationEmailAddress:'',
+        orderProcessing:true,
+        modal:false
     }
     handleChange = ({event,value})=>{
         event.persist();
@@ -23,19 +25,15 @@ class Checkout extends Component{
             this.showToast("Fill in all filed");
             return;
         }
-        try{
-            this.setState({loading:true});
-            // const response = await strApi.register(username,email,password);
-            this.setState({loading:false});
-            // setTokenKey(response.jwt);
-            // this.redirectUser("/");
+        this.setState({modal:true});
 
-
-        }catch(err){
-            this.setState({loading:false});
-            this.showToast(err.message);
-        }
     }
+
+    handleSubmitOrder = ()=>{
+    }
+
+    closeModal = ()=>this.setState({modal:false});
+
     isFormEmpty = ({address,postcode,city,confirmationEmailAddress})=>{
         return !address || !postcode || !city || !confirmationEmailAddress;
     }
@@ -49,7 +47,7 @@ class Checkout extends Component{
         this.setState({cartItems:getCart()});
     }
     render(){
-        const {toast,toastMessage,cartItems} = this.state;
+        const {toast,toastMessage,cartItems,modal,orderProcessing} = this.state;
         return (
             <Container>
             <Box
@@ -128,11 +126,69 @@ class Checkout extends Component{
                 </Box>
             )
             }
-                
             </Box>
+            {modal && (
+            <ConfirmationModal 
+            orderProcessing={orderProcessing} 
+            cartItems={cartItems} 
+            closeModal={this.closeModal}
+            handleSubmitOrder={this.handleSubmitOrder}/>)}
             <ToastMessage show={toast} message={toastMessage}/>
         </Container>)
     }
 }
 
+const ConfirmationModal = ({orderProcessing,cartItems,closeModal,handleSubmitOrder})=>(
+<Modal
+    accessibilityCloseLabel="close"
+    accessibilityModalLabel="Confirm your order"
+    heading="Confirm your order"
+    onDismiss={closeModal}
+    footer={
+    <Box
+        display="flex"
+        marginRight={-1}
+        marginLeft={-1}
+        justifyContent="center"
+    >
+        <Box padding={1}>
+            <Button
+                size="lg"
+                color="red"
+                text="Submit"
+                disabled={orderProcessing}
+                onClick={handleSubmitOrder}
+            ></Button>            
+        </Box>
+        <Box padding={1}>
+            <Button
+                size="lg"
+                text="Cancel"
+                disabled={orderProcessing}
+                onClick={closeModal}
+            ></Button>
+        </Box>
+    </Box>}
+    role="alertdialog"
+    size="sm"
+>
+    {!orderProcessing &&(
+    <Box alignItems="center" justifyContent="center" display="flex" direction="column" padding={1} color="lightWash">
+        {cartItems.map(item=>(
+        <Box key={item._id} padding={1}>
+            <Text size="lg" color="red">
+            {item.name} X {item.quantity} - ${item.quantity * item.price}
+            </Text>
+        </Box>
+        ))}
+        <Box padding={2}>
+            <Text size="lg" bold>
+                Total:{caculatePrice(cartItems)}
+            </Text>
+        </Box>
+    </Box>)}
+    <Spinner show={orderProcessing} accessibilityLabel="order processing spinner"/>
+    {orderProcessing && (<Text align="center" italic>Submitting order....</Text>)}
+
+</Modal>)
 export default Checkout;
