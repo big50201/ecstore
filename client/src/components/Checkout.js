@@ -37,7 +37,7 @@ class _CheckoutForm extends Component{
     }
 
     handleSubmitOrder = async()=>{
-        const {cartItems,city,address,postcode} = this.state;
+        const {cartItems,city,address,postcode,confirmationEmailAddress} = this.state;
         const amount = caculateAmount(cartItems);
         this.setState({orderProcessing:true});
         let token;
@@ -51,6 +51,14 @@ class _CheckoutForm extends Component{
                 address,
                 postcode,
                 token
+            });
+            await strApi.request("POST","/email",{
+                data:{
+                    to:confirmationEmailAddress,
+                    subject:`Order Confirmation - brews ${new Date(Date.now())}`,
+                    text:'Your order has been processed',
+                    html:'<bold>Expect your order to arrive in 2-3 shipping days</bold>'
+                }
             });
             this.setState({orderProcessing:false,modal:false});
             clearCart();
