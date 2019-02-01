@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/strapi-plugin-users-permissions/-/strapi-plugin-users-permissions-3.0.0-alpha.21.tgz",
   "_shasum": "3cbe981bab1ddab226cac8449320aa6855fbc843",
   "_spec": "strapi-plugin-users-permissions@3.0.0-alpha.21",
-  "_where": "/Users/jennifer.sung/Desktop/practice/ecommerce-react-graphql-stripe/client/server",
+  "_where": "/Users/jennifer.sung/Desktop/practice/ecstore/server",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",

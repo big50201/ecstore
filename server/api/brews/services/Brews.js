@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Brand.js service
+ * Brews.js service
  *
  * @description: A set of functions similar to controller's actions to avoid code duplication.
  */
@@ -12,21 +12,21 @@ const _ = require('lodash');
 module.exports = {
 
   /**
-   * Promise to fetch all brands.
+   * Promise to fetch all brews.
    *
    * @return {Promise}
    */
 
   fetchAll: (params) => {
     // Convert `params` object to filters compatible with Mongo.
-    const filters = strapi.utils.models.convertParams('brand', params);
+    const filters = strapi.utils.models.convertParams('brews', params);
     // Select field to populate.
-    const populate = Brand.associations
+    const populate = Brews.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
-    return Brand
+    return Brews
       .find()
       .where(filters.where)
       .sort(filters.sort)
@@ -36,90 +36,90 @@ module.exports = {
   },
 
   /**
-   * Promise to fetch a/an brand.
+   * Promise to fetch a/an brews.
    *
    * @return {Promise}
    */
 
   fetch: (params) => {
     // Select field to populate.
-    const populate = Brand.associations
+    const populate = Brews.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
-    return Brand
-      .findOne(_.pick(params, _.keys(Brand.schema.paths)))
+    return Brews
+      .findOne(_.pick(params, _.keys(Brews.schema.paths)))
       .populate(populate);
   },
 
   /**
-   * Promise to count brands.
+   * Promise to count brews.
    *
    * @return {Promise}
    */
 
   count: (params) => {
     // Convert `params` object to filters compatible with Mongo.
-    const filters = strapi.utils.models.convertParams('brand', params);
+    const filters = strapi.utils.models.convertParams('brews', params);
 
-    return Brand
+    return Brews
       .count()
       .where(filters.where);
   },
 
   /**
-   * Promise to add a/an brand.
+   * Promise to add a/an brews.
    *
    * @return {Promise}
    */
 
   add: async (values) => {
     // Extract values related to relational data.
-    const relations = _.pick(values, Brand.associations.map(ast => ast.alias));
-    const data = _.omit(values, Brand.associations.map(ast => ast.alias));
+    const relations = _.pick(values, Brews.associations.map(ast => ast.alias));
+    const data = _.omit(values, Brews.associations.map(ast => ast.alias));
 
     // Create entry with no-relational data.
-    const entry = await Brand.create(data);
+    const entry = await Brews.create(data);
 
     // Create relational data and return the entry.
-    return Brand.updateRelations({ _id: entry.id, values: relations });
+    return Brews.updateRelations({ _id: entry.id, values: relations });
   },
 
   /**
-   * Promise to edit a/an brand.
+   * Promise to edit a/an brews.
    *
    * @return {Promise}
    */
 
   edit: async (params, values) => {
     // Extract values related to relational data.
-    const relations = _.pick(values, Brand.associations.map(a => a.alias));
-    const data = _.omit(values, Brand.associations.map(a => a.alias));
+    const relations = _.pick(values, Brews.associations.map(a => a.alias));
+    const data = _.omit(values, Brews.associations.map(a => a.alias));
 
     // Update entry with no-relational data.
-    const entry = await Brand.update(params, data, { multi: true });
+    const entry = await Brews.update(params, data, { multi: true });
 
     // Update relational data and return the entry.
-    return Brand.updateRelations(Object.assign(params, { values: relations }));
+    return Brews.updateRelations(Object.assign(params, { values: relations }));
   },
 
   /**
-   * Promise to remove a/an brand.
+   * Promise to remove a/an brews.
    *
    * @return {Promise}
    */
 
   remove: async params => {
     // Select field to populate.
-    const populate = Brand.associations
+    const populate = Brews.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
     // Note: To get the full response of Mongo, use the `remove()` method
     // or add spent the parameter `{ passRawResult: true }` as second argument.
-    const data = await Brand
+    const data = await Brews
       .findOneAndRemove(params, {})
       .populate(populate);
 
@@ -128,7 +128,7 @@ module.exports = {
     }
 
     await Promise.all(
-      Brand.associations.map(async association => {
+      Brews.associations.map(async association => {
         if (!association.via || !data._id) {
           return true;
         }
@@ -149,22 +149,22 @@ module.exports = {
   },
 
   /**
-   * Promise to search a/an brand.
+   * Promise to search a/an brews.
    *
    * @return {Promise}
    */
 
   search: async (params) => {
     // Convert `params` object to filters compatible with Mongo.
-    const filters = strapi.utils.models.convertParams('brand', params);
+    const filters = strapi.utils.models.convertParams('brews', params);
     // Select field to populate.
-    const populate = Brand.associations
+    const populate = Brews.associations
       .filter(ast => ast.autoPopulate !== false)
       .map(ast => ast.alias)
       .join(' ');
 
-    const $or = Object.keys(Brand.attributes).reduce((acc, curr) => {
-      switch (Brand.attributes[curr].type) {
+    const $or = Object.keys(Brews.attributes).reduce((acc, curr) => {
+      switch (Brews.attributes[curr].type) {
         case 'integer':
         case 'float':
         case 'decimal':
@@ -188,7 +188,7 @@ module.exports = {
       }
     }, []);
 
-    return Brand
+    return Brews
       .find({ $or })
       .sort(filters.sort)
       .skip(filters.start)

@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/strapi-plugin-email/-/strapi-plugin-email-3.0.0-alpha.21.tgz",
   "_shasum": "ee966dd7c293fddff4a2145f76dd15985603b034",
   "_spec": "strapi-plugin-email@3.0.0-alpha.21",
-  "_where": "/Users/jennifer.sung/Desktop/practice/ecommerce-react-graphql-stripe/client/server",
+  "_where": "/Users/jennifer.sung/Desktop/practice/ecstore/server",
   "author": {
     "name": "Strapi team",
     "email": "hi@strapi.io",

@@ -3,7 +3,7 @@
     {
       "method": "GET",
       "path": "/brews",
-      "handler": "Brew.find",
+      "handler": "Brews.find",
       "config": {
         "policies": []
       }
@@ -11,7 +11,7 @@
     {
       "method": "GET",
       "path": "/brews/count",
-      "handler": "Brew.count",
+      "handler": "Brews.count",
       "config": {
         "policies": []
       }
@@ -19,7 +19,7 @@
     {
       "method": "GET",
       "path": "/brews/:_id",
-      "handler": "Brew.findOne",
+      "handler": "Brews.findOne",
       "config": {
         "policies": []
       }
@@ -27,7 +27,7 @@
     {
       "method": "POST",
       "path": "/brews",
-      "handler": "Brew.create",
+      "handler": "Brews.create",
       "config": {
         "policies": []
       }
@@ -35,7 +35,7 @@
     {
       "method": "PUT",
       "path": "/brews/:_id",
-      "handler": "Brew.update",
+      "handler": "Brews.update",
       "config": {
         "policies": []
       }
@@ -43,7 +43,7 @@
     {
       "method": "DELETE",
       "path": "/brews/:_id",
-      "handler": "Brew.destroy",
+      "handler": "Brews.destroy",
       "config": {
         "policies": []
       }

@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/strapi-plugin-graphql/-/strapi-plugin-graphql-3.0.0-alpha.21.tgz",
   "_shasum": "d0a9d340e363579261516ab92cc3563541e4bb96",
   "_spec": "strapi-plugin-graphql@3.0.0-alpha.21",
-  "_where": "/Users/jennifer.sung/Desktop/practice/ecommerce-react-graphql-stripe/client/server",
+  "_where": "/Users/jennifer.sung/Desktop/practice/ecstore/server",
   "author": {
     "name": "A Strapi developer"
   },

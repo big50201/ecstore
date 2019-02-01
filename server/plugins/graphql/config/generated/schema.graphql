@@ -1,155 +1,163 @@
-type Brand {
+type Brands {
   _id: ID!
   name: String
-  image: UploadFile
   description: String
-  brews(sort: String, limit: Int, start: Int, where: JSON): [Brew]
+  image: UploadFile
+  brews(sort: String, limit: Int, start: Int, where: JSON): [Brews]
 }
 
-type BrandAggregator {
+type BrandsAggregator {
   count: Int
 }
 
-type BrandConnection {
-  values: [Brand]
-  groupBy: BrandGroupBy
-  aggregate: BrandAggregator
+type BrandsConnection {
+  values: [Brands]
+  groupBy: BrandsGroupBy
+  aggregate: BrandsAggregator
 }
 
-type BrandConnection_id {
+type BrandsConnection_id {
   key: ID
-  connection: BrandConnection
+  connection: BrandsConnection
 }
 
-type BrandConnectionDescription {
+type BrandsConnectionDescription {
   key: String
-  connection: BrandConnection
+  connection: BrandsConnection
 }
 
-type BrandConnectionImage {
+type BrandsConnectionImage {
   key: ID
-  connection: BrandConnection
+  connection: BrandsConnection
 }
 
-type BrandConnectionName {
+type BrandsConnectionName {
   key: String
-  connection: BrandConnection
+  connection: BrandsConnection
 }
 
-type BrandGroupBy {
-  _id: [BrandConnection_id]
-  name: [BrandConnectionName]
-  image: [BrandConnectionImage]
-  description: [BrandConnectionDescription]
+type BrandsGroupBy {
+  _id: [BrandsConnection_id]
+  name: [BrandsConnectionName]
+  description: [BrandsConnectionDescription]
+  image: [BrandsConnectionImage]
 }
 
-input BrandInput {
+input BrandsInput {
   name: String
-  image: ID
   description: String
+  image: ID
   brews: [ID]
 }
 
-type Brew {
+type Brews {
   _id: ID!
   name: String
   description: String
+  price: Float
+  brand: Brands
   image: UploadFile
-  price: Float
-  brand: Brand
 }
 
-type BrewAggregator {
+type BrewsAggregator {
   count: Int
-  sum: BrewAggregatorSum
-  avg: BrewAggregatorAvg
-  min: BrewAggregatorMin
-  max: BrewAggregatorMax
+  sum: BrewsAggregatorSum
+  avg: BrewsAggregatorAvg
+  min: BrewsAggregatorMin
+  max: BrewsAggregatorMax
 }
 
-type BrewAggregatorAvg {
+type BrewsAggregatorAvg {
   price: Float
 }
 
-type BrewAggregatorMax {
+type BrewsAggregatorMax {
   price: Float
 }
 
-type BrewAggregatorMin {
+type BrewsAggregatorMin {
   price: Float
 }
 
-type BrewAggregatorSum {
+type BrewsAggregatorSum {
   price: Float
 }
 
-type BrewConnection {
-  values: [Brew]
-  groupBy: BrewGroupBy
-  aggregate: BrewAggregator
+type BrewsConnection {
+  values: [Brews]
+  groupBy: BrewsGroupBy
+  aggregate: BrewsAggregator
 }
 
-type BrewConnection_id {
+type BrewsConnection_id {
   key: ID
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewConnectionBrand {
+type BrewsConnectionBrand {
   key: ID
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewConnectionDescription {
+type BrewsConnectionDescription {
   key: String
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewConnectionImage {
+type BrewsConnectionImage {
   key: ID
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewConnectionName {
+type BrewsConnectionName {
   key: String
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewConnectionPrice {
+type BrewsConnectionPrice {
   key: Float
-  connection: BrewConnection
+  connection: BrewsConnection
 }
 
-type BrewGroupBy {
-  _id: [BrewConnection_id]
-  name: [BrewConnectionName]
-  description: [BrewConnectionDescription]
-  image: [BrewConnectionImage]
-  price: [BrewConnectionPrice]
-  brand: [BrewConnectionBrand]
+type BrewsGroupBy {
+  _id: [BrewsConnection_id]
+  name: [BrewsConnectionName]
+  description: [BrewsConnectionDescription]
+  price: [BrewsConnectionPrice]
+  brand: [BrewsConnectionBrand]
+  image: [BrewsConnectionImage]
 }
 
-input BrewInput {
+input BrewsInput {
   name: String
   description: String
-  image: ID
   price: Float
   brand: ID
+  image: ID
 }
 
-input createBrandInput {
-  data: BrandInput
+input createBrandsInput {
+  data: BrandsInput
 }
 
-type createBrandPayload {
-  brand: Brand
+type createBrandsPayload {
+  brand: Brands
 }
 
-input createBrewInput {
-  data: BrewInput
+input createBrewsInput {
+  data: BrewsInput
 }
 
-type createBrewPayload {
-  brew: Brew
+type createBrewsPayload {
+  brew: Brews
+}
+
+input createOrdersInput {
+  data: OrdersInput
+}
+
+type createOrdersPayload {
+  order: Orders
 }
 
 input createRoleInput {
@@ -173,20 +181,28 @@ The `DateTime` scalar represents a date and time following the ISO 8601 standard
 """
 scalar DateTime
 
-input deleteBrandInput {
+input deleteBrandsInput {
   where: InputID
 }
 
-type deleteBrandPayload {
-  brand: Brand
+type deleteBrandsPayload {
+  brand: Brands
 }
 
-input deleteBrewInput {
+input deleteBrewsInput {
   where: InputID
 }
 
-type deleteBrewPayload {
-  brew: Brew
+type deleteBrewsPayload {
+  brew: Brews
+}
+
+input deleteOrdersInput {
+  where: InputID
+}
+
+type deleteOrdersPayload {
+  order: Orders
 }
 
 input deleteRoleInput {
@@ -205,19 +221,19 @@ type deleteUserPayload {
   user: UsersPermissionsUser
 }
 
-input editBrandInput {
+input editBrandsInput {
   name: String
-  image: ID
   description: String
+  image: ID
   brews: [ID]
 }
 
-input editBrewInput {
+input editBrewsInput {
   name: String
   description: String
-  image: ID
   price: Float
   brand: ID
+  image: ID
 }
 
 input editFileInput {
@@ -231,6 +247,14 @@ input editFileInput {
   provider: String
   public_id: String
   related: [ID]
+}
+
+input editOrdersInput {
+  address: String
+  city: String
+  postcode: String
+  amount: Int
+  brews: JSON
 }
 
 input editRoleInput {
@@ -274,15 +298,18 @@ The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://
 """
 scalar JSON
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | Brand | createBrandPayload | updateBrandPayload | deleteBrandPayload | BrandConnection | BrandAggregator | BrandGroupBy | BrandConnection_id | BrandConnectionName | BrandConnectionImage | BrandConnectionDescription | Brew | createBrewPayload | updateBrewPayload | deleteBrewPayload | BrewConnection | BrewAggregator | BrewAggregatorSum | BrewAggregatorAvg | BrewAggregatorMin | BrewAggregatorMax | BrewGroupBy | BrewConnection_id | BrewConnectionName | BrewConnectionDescription | BrewConnectionImage | BrewConnectionPrice | BrewConnectionBrand | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | Brands | createBrandsPayload | updateBrandsPayload | deleteBrandsPayload | BrandsConnection | BrandsAggregator | BrandsGroupBy | BrandsConnection_id | BrandsConnectionName | BrandsConnectionDescription | BrandsConnectionImage | Brews | createBrewsPayload | updateBrewsPayload | deleteBrewsPayload | BrewsConnection | BrewsAggregator | BrewsAggregatorSum | BrewsAggregatorAvg | BrewsAggregatorMin | BrewsAggregatorMax | BrewsGroupBy | BrewsConnection_id | BrewsConnectionName | BrewsConnectionDescription | BrewsConnectionPrice | BrewsConnectionBrand | BrewsConnectionImage | Orders | createOrdersPayload | updateOrdersPayload | deleteOrdersPayload | OrdersConnection | OrdersAggregator | OrdersGroupBy | OrdersConnection_id | OrdersConnectionAddress | OrdersConnectionCity | OrdersConnectionPostcode | OrdersConnectionAmount | OrdersConnectionBrews | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileGroupBy | UploadFileConnection_id | UploadFileConnectionName | UploadFileConnectionHash | UploadFileConnectionSha256 | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionProvider | UploadFileConnectionPublic_id | UsersPermissionsPermission | UsersPermissionsRole | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | UsersPermissionsUser | createUserPayload | updateUserPayload | deleteUserPayload | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole
 
 type Mutation {
-  createBrand(input: createBrandInput): createBrandPayload
-  updateBrand(input: updateBrandInput): updateBrandPayload
-  deleteBrand(input: deleteBrandInput): deleteBrandPayload
-  createBrew(input: createBrewInput): createBrewPayload
-  updateBrew(input: updateBrewInput): updateBrewPayload
-  deleteBrew(input: deleteBrewInput): deleteBrewPayload
+  createBrands(input: createBrandsInput): createBrandsPayload
+  updateBrands(input: updateBrandsInput): updateBrandsPayload
+  deleteBrands(input: deleteBrandsInput): deleteBrandsPayload
+  createBrews(input: createBrewsInput): createBrewsPayload
+  updateBrews(input: updateBrewsInput): updateBrewsPayload
+  deleteBrews(input: deleteBrewsInput): deleteBrewsPayload
+  createOrders(input: createOrdersInput): createOrdersPayload
+  updateOrders(input: updateOrdersInput): updateOrdersPayload
+  deleteOrders(input: deleteOrdersInput): deleteOrdersPayload
 
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
@@ -304,13 +331,82 @@ type Mutation {
   upload(refId: ID, ref: String, source: String, file: Upload!): UploadFile!
 }
 
+type Orders {
+  _id: ID!
+  address: String!
+  city: String!
+  postcode: String!
+  amount: Int!
+  brews: JSON!
+}
+
+type OrdersAggregator {
+  count: Int
+}
+
+type OrdersConnection {
+  values: [Orders]
+  groupBy: OrdersGroupBy
+  aggregate: OrdersAggregator
+}
+
+type OrdersConnection_id {
+  key: ID
+  connection: OrdersConnection
+}
+
+type OrdersConnectionAddress {
+  key: String
+  connection: OrdersConnection
+}
+
+type OrdersConnectionAmount {
+  key: Int
+  connection: OrdersConnection
+}
+
+type OrdersConnectionBrews {
+  key: JSON
+  connection: OrdersConnection
+}
+
+type OrdersConnectionCity {
+  key: String
+  connection: OrdersConnection
+}
+
+type OrdersConnectionPostcode {
+  key: String
+  connection: OrdersConnection
+}
+
+type OrdersGroupBy {
+  _id: [OrdersConnection_id]
+  address: [OrdersConnectionAddress]
+  city: [OrdersConnectionCity]
+  postcode: [OrdersConnectionPostcode]
+  amount: [OrdersConnectionAmount]
+  brews: [OrdersConnectionBrews]
+}
+
+input OrdersInput {
+  address: String!
+  city: String!
+  postcode: String!
+  amount: Int!
+  brews: JSON!
+}
+
 type Query {
-  brand(id: ID!): Brand
-  brands(sort: String, limit: Int, start: Int, where: JSON): [Brand]
-  brandsConnection(sort: String, limit: Int, start: Int, where: JSON): BrandConnection
-  brew(id: ID!): Brew
-  brews(sort: String, limit: Int, start: Int, where: JSON): [Brew]
-  brewsConnection(sort: String, limit: Int, start: Int, where: JSON): BrewConnection
+  brand(id: ID!): Brands
+  brands(sort: String, limit: Int, start: Int, where: JSON): [Brands]
+  brandsConnection(sort: String, limit: Int, start: Int, where: JSON): BrandsConnection
+  brew(id: ID!): Brews
+  brews(sort: String, limit: Int, start: Int, where: JSON): [Brews]
+  brewsConnection(sort: String, limit: Int, start: Int, where: JSON): BrewsConnection
+  order(id: ID!): Orders
+  orders(sort: String, limit: Int, start: Int, where: JSON): [Orders]
+  ordersConnection(sort: String, limit: Int, start: Int, where: JSON): OrdersConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -334,22 +430,31 @@ input RoleInput {
   users: [ID]
 }
 
-input updateBrandInput {
+input updateBrandsInput {
   where: InputID
-  data: editBrandInput
+  data: editBrandsInput
 }
 
-type updateBrandPayload {
-  brand: Brand
+type updateBrandsPayload {
+  brand: Brands
 }
 
-input updateBrewInput {
+input updateBrewsInput {
   where: InputID
-  data: editBrewInput
+  data: editBrewsInput
 }
 
-type updateBrewPayload {
-  brew: Brew
+type updateBrewsPayload {
+  brew: Brews
+}
+
+input updateOrdersInput {
+  where: InputID
+  data: editOrdersInput
+}
+
+type updateOrdersPayload {
+  order: Orders
 }
 
 input updateRoleInput {

@@ -2,7 +2,8 @@ import React,{Component} from 'react';
 import {Container,Box,Button,Heading,Text,TextField,Modal,Spinner} from 'gestalt';
 import ToastMessage from './ToastMessage';
 import {getCart,caculatePrice} from '../utils';
-class Checkout extends Component{
+import {Elements,StripeProvider,CardElement,injectStripe} from 'react-stripe-elements';
+class _CheckoutForm extends Component{
     state = {
         cartItems:[],
         toast:false,
@@ -117,6 +118,7 @@ class Checkout extends Component{
                             placeholder="Confirmation Email Address"
                             onChange={this.handleChange}
                         />
+                        <CardElement id="stripe__input" onReady= {input=>input.focus()} />
                         <button type="submit" id="stripe__button">Submit</button>
                     </form>
             </React.Fragment>):(
@@ -191,4 +193,13 @@ const ConfirmationModal = ({orderProcessing,cartItems,closeModal,handleSubmitOrd
     {orderProcessing && (<Text align="center" italic>Submitting order....</Text>)}
 
 </Modal>)
+
+const CheckoutForm = injectStripe(_CheckoutForm);
+const Checkout = ()=>(
+    <StripeProvider apiKey="pk_test_48gfNFR4LmXzUVZW6bQlXw2d">
+        <Elements>
+            <CheckoutForm/>
+        </Elements>
+    </StripeProvider>
+)
 export default Checkout;

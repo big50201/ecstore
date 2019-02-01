@@ -21,7 +21,7 @@
   "_resolved": "https://registry.npmjs.org/strapi-plugin-upload/-/strapi-plugin-upload-3.0.0-alpha.21.tgz",
   "_shasum": "d077d841e7c01086a724b1f8817ac77767eacb38",
   "_spec": "strapi-plugin-upload@3.0.0-alpha.21",
-  "_where": "/Users/jennifer.sung/Desktop/practice/ecommerce-react-graphql-stripe/client/server",
+  "_where": "/Users/jennifer.sung/Desktop/practice/ecstore/server",
   "author": {
     "name": "A Strapi developer"
   },

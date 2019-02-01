@@ -5,11 +5,11 @@
       "connector": "strapi-hook-mongoose",
       "settings": {
         "client": "mongo",
-        "host": "ds113765.mlab.com",
+        "host": "ds119085.mlab.com",
         "srv": false,
-        "port": "13765",
+        "port": "19085",
         "database": "ecstore",
-        "username": "jennifersung",
+        "username": "jennifer.sung",
         "password": "happy0201"
       },
       "options": {
