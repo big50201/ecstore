@@ -1,8 +1,14 @@
 import React,{Component} from 'react';
 import {Container,Box,Button,Heading,Text,TextField,Modal,Spinner} from 'gestalt';
 import ToastMessage from './ToastMessage';
-import {getCart,caculatePrice} from '../utils';
+import {getCart,caculatePrice,clearCart,caculateAmount} from '../utils';
 import {Elements,StripeProvider,CardElement,injectStripe} from 'react-stripe-elements';
+import strapi from 'strapi-sdk-javascript/build/main';
+import {withRouter} from 'react-router-dom';
+
+const apiUrl = process.env.API_URL || "http://localhost:1337";
+const strApi = new strapi(apiUrl);
+
 class _CheckoutForm extends Component{
     state = {
         cartItems:[],
@@ -12,7 +18,7 @@ class _CheckoutForm extends Component{
         postcode:'',
         city:'',
         confirmationEmailAddress:'',
-        orderProcessing:true,
+        orderProcessing:false,
         modal:false
     }
     handleChange = ({event,value})=>{
@@ -30,7 +36,30 @@ class _CheckoutForm extends Component{
 
     }
 
-    handleSubmitOrder = ()=>{
+    handleSubmitOrder = async()=>{
+        const {cartItems,city,address,postcode} = this.state;
+        const amount = caculateAmount(cartItems);
+        this.setState({orderProcessing:true});
+        let token;
+        try{
+            const response = await this.props.stripe.createToken();
+            token = response.token.id;
+            await strApi.createEntry('orders',{
+                amount,
+                brews:cartItems,
+                city,
+                address,
+                postcode,
+                token
+            });
+            this.setState({orderProcessing:false,modal:false});
+            clearCart();
+            this.showToast('Your order has been sucessfully submitted!',true);
+
+        }catch(err){
+            this.setState({orderProcessing:false,modal:false});
+            this.showToast(err.message,false);
+        }
     }
 
     closeModal = ()=>this.setState({modal:false});
@@ -39,9 +68,11 @@ class _CheckoutForm extends Component{
         return !address || !postcode || !city || !confirmationEmailAddress;
     }
 
-    showToast = message=>{
+    showToast = (message,redirect=false)=>{
         this.setState({toast:true,toastMessage:message});
-        setTimeout(()=>this.setState({toast:false,toastMessage:''}),5000);
+        setTimeout(()=>this.setState({toast:false,toastMessage:''},
+        ()=>redirect && this.props.history.push("/")),
+        5000);
     }
 
     componentDidMount(){
@@ -99,7 +130,7 @@ class _CheckoutForm extends Component{
                         />
                         <TextField
                             id="postcode"
-                            type="number"
+                            type="text"
                             name="postcode"
                             placeholder="Postal Code"
                             onChange={this.handleChange}
@@ -194,7 +225,7 @@ const ConfirmationModal = ({orderProcessing,cartItems,closeModal,handleSubmitOrd
 
 </Modal>)
 
-const CheckoutForm = injectStripe(_CheckoutForm);
+const CheckoutForm = withRouter(injectStripe(_CheckoutForm));
 const Checkout = ()=>(
     <StripeProvider apiKey="pk_test_48gfNFR4LmXzUVZW6bQlXw2d">
         <Elements>
@@ -202,4 +233,4 @@ const Checkout = ()=>(
         </Elements>
     </StripeProvider>
 )
-export default Checkout;
+export default (Checkout);
